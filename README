@@ -1,1 +1,31 @@
-imron waloh
+***อักษรสีแดง ต้องเปลี่ยนให้เป็นของเรา***
+
+1.docker network create ชื่อเน็ตเวิร์ค       *สร้างเน็ตเวิร์ค
+2.docker run --name ชื่อเซิร์ฟเวอร์ --network ชื่อเน็ตเวิร์ค -d -p 3306:3306 -v c:/mysql-data:/var/lib/mysql -e MYSQL_ROOT_PASSWORD=รหัส(ตอนจะเข้าphpmyadmin) mysql       *สร้างเซิร์ฟเวอร์
+3.docker run --name phpmyadmin --link mysql-server:db --network ชื่อเน็ตเวิร์ค -p 8080:80 -d phpmyadmin      *สร้างหน้าphpmyadmin
+
+4.cd โฟลเดอร์เซิร์ฟเวอร์    *เข้าไปในโฟลเดอร์server
+5.docker build . -t ชื่อimage(อะไรก็ได้)    *สร้างimaege API
+6.docker run --name [ชื่อimage(อะไรก็ได้)] --network ชื่อเน็ตเวิร์ค -p 3333:3333 -d [ชื่อimage(อะไรก็ได้)]      *สร้างcontainer API
+
+*ต้องมีไฟล์dockerfileในโฟลเดอร์reactก่อน
+7.cd โฟลเดอร์react      *เข้าไปโฟลเดอร์react
+8.docker build . -t react-app       *สร้างimage
+9.docker run --name react-app --network ชื่อเน็ตเวิร์ค -p 3001:3000 -d react-app    *สร้างcontainerเพื่อรันreactในdockerได้
+
+
+
+
+***ตัวอย่าง(ถ้าเอาโปรเจ็คนี้ จามนี้ได้เลย)***
+
+*docker network create hubi-net
+*docker run --name mysql-server --network hubi-net -d -p 3306:3306 -v c:/mysql-data:/var/lib/mysql -e MYSQL_ROOT_PASSWORD=1234 mysql
+* docker run --name phpmyadmin --link mysql-server:db --network hubi-net -p 8080:80 -d phpmyadmin
+
+* cd server
+*docker build . -t hubi-server
+*docker run --name hubi-server --network hubi-net -p 3333:3333 -d hubi-server
+
+*cd batok
+*docker build . -t react-app
+*docker run --name react-app --network hubi-net -p 3001:3000 -d react-app 
